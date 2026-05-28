@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  # Servidor Ollama local para execução de LLM e Embeddings offline
+  ollama:
+    image: ollama/ollama:latest
+    container_name: giulia-crag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: always
+
+volumes:
+  ollama_data:

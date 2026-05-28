@@ -1,0 +1,269 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 680 880"
+  width="2040" height="2640"
+  role="img"
+  style="font-family: 'Inter', 'Segoe UI', sans-serif; background: #0f1117;">
+
+  <title>PRJ-04 Corrective RAG (CRAG) — GIULIA AI Engineering Ecosystem</title>
+  <desc>Pipeline Corrective RAG (CRAG) com Autocorreção, Reformulação e Validação contra Alucinações: PDF → ChromaDB → RelevanceAuditor → QueryReformulator → HallucinationValidator → Ollama</desc>
+
+  <defs>
+    <!-- Arrow marker -->
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="var(--arr-color, #4a5568)"/>
+    </marker>
+
+    <!-- Glow filter for central node -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #161b27;
+      --border-primary: rgba(255,255,255,0.15);
+      --border-secondary: rgba(255,255,255,0.08);
+      --border-tertiary: rgba(255,255,255,0.05);
+      --text-primary: #e8eaf0;
+      --text-secondary: #8892a4;
+    }
+
+    .th {
+      fill: #e8eaf0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .ts {
+      fill: #8892a4;
+      font-size: 10px;
+      font-weight: 400;
+    }
+    .arr {
+      stroke-width: 1.2;
+      fill: none;
+    }
+
+    /* Node colors following standard convention */
+    .c-gray  rect { fill: #1e2330; stroke: rgba(148,163,184,0.4); }
+    .c-teal  rect { fill: #0d2d2d; stroke: rgba( 45,212,191,0.45); }
+    .c-purple rect { fill: #1e1530; stroke: rgba(139,92, 246,0.5); }
+    .c-blue  rect { fill: #0d1e3d; stroke: rgba( 59,130,246,0.6); }
+    .c-amber rect { fill: #2d1f00; stroke: rgba(245,158, 11,0.5); }
+    .c-coral rect { fill: #2d1010; stroke: rgba(239, 68, 68,0.5); }
+    .c-green rect { fill: #0d2d1a; stroke: rgba( 34,197, 94,0.5); }
+
+    .c-gray  .th { fill: #94a3b8; }
+    .c-teal  .th { fill: #2dd4bf; }
+    .c-purple .th { fill: #a78bfa; }
+    .c-blue  .th { fill: #60a5fa; }
+    .c-amber .th { fill: #fbbf24; }
+    .c-coral .th { fill: #f87171; }
+    .c-green .th { fill: #4ade80; }
+
+    /* Hover effect */
+    .node { cursor: pointer; transition: opacity 0.2s; }
+    .node:hover { opacity: 0.82; }
+    .node:hover rect { stroke-width: 1.5 !important; }
+
+    /* Arrow colors per flow */
+    .arr-gray   { stroke: rgba(148,163,184,0.4); }
+    .arr-teal   { stroke: rgba( 45,212,191,0.4); }
+    .arr-purple { stroke: rgba(139, 92,246,0.4); }
+    .arr-blue   { stroke: rgba( 59,130,246,0.5); }
+    .arr-green  { stroke: rgba( 34,197, 94,0.4); }
+    .arr-amber  { stroke: rgba(245, 158, 11, 0.4); }
+
+    /* Phase labels */
+    .phase-label {
+      fill: rgba(255,255,255,0.3);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+  </style>
+
+  <!-- BACKGROUND PANEL -->
+  <rect width="680" height="880" fill="#0f1117"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="680" height="56" fill="#0d1117"/>
+  <text x="340" y="24" text-anchor="middle" dominant-baseline="central"
+    font-size="13" font-weight="700" fill="#e8eaf0">
+    PRJ-04 · Corrective RAG (CRAG) com Autocorreção
+  </text>
+  <text x="340" y="44" text-anchor="middle" dominant-baseline="central"
+    font-size="10" fill="#2dd4bf" letter-spacing="2">
+    SELF-REFLECTION · QUERY REFORMULATION · HALLUCINATION VALIDATOR
+  </text>
+
+  <!-- ══════════════════════════════════════════════════
+       FASE 1: INGESTÃO JURÍDICA
+  ══════════════════════════════════════════════════ -->
+  <text class="phase-label" x="40" y="88">INGESTÃO JURÍDICA (CHUNKING POR ARTIGO)</text>
+  <line x1="40" y1="96" x2="640" y2="96" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+  <!-- Node: PDF Ingestion -->
+  <g class="node c-amber" onclick="sendPrompt('Como funciona o loader jurídico e PyMuPDF do PRJ-04?')">
+    <rect x="40" y="110" width="160" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="120" y="130" text-anchor="middle" dominant-baseline="central">📄 PyMuPDFLoader</text>
+    <text class="ts" x="120" y="149" text-anchor="middle" dominant-baseline="central">Docs &amp; Contratos Jurídicos</text>
+  </g>
+
+  <!-- Arrow: Ingest → Splitter -->
+  <line x1="200" y1="136" x2="238" y2="136" class="arr arr-gray" marker-end="url(#arrow)"/>
+
+  <!-- Node: RecursiveTextSplitter (Separadores Especiais) -->
+  <g class="node c-teal" onclick="sendPrompt('Quais separadores especiais de Artigo e Parágrafo são usados no splitter do PRJ-04?')">
+    <rect x="240" y="110" width="180" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="330" y="130" text-anchor="middle" dominant-baseline="central">Splitter Jurídico</text>
+    <text class="ts" x="330" y="149" text-anchor="middle" dominant-baseline="central">["\\nArt.", "\\n§", "\\n\\n", "\\n"]</text>
+  </g>
+
+  <!-- Arrow: Splitter → Vectorstore -->
+  <line x1="420" y1="136" x2="458" y2="136" class="arr arr-teal" marker-end="url(#arrow)"/>
+
+  <!-- Node: ChromaDB -->
+  <g class="node c-purple" onclick="sendPrompt('Como o ChromaDB atua como VectorDB local no PRJ-04?')">
+    <rect x="460" y="110" width="180" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="550" y="130" text-anchor="middle" dominant-baseline="central">🗄️ ChromaDB (Lazy)</text>
+    <text class="ts" x="550" y="149" text-anchor="middle" dominant-baseline="central">Inicialização sob demanda</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       FASE 2: RETRIEVAL & SELF-REFLECTION (AUDITORIA)
+  ══════════════════════════════════════════════════ -->
+  <line x1="40" y1="228" x2="640" y2="228" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <text class="phase-label" x="40" y="220">PROCESSO DE BUSCA E AUTO-AVALIAÇÃO</text>
+
+  <!-- Node: User Query -->
+  <g class="node c-amber" onclick="sendPrompt('Como a query é processada no loop principal do PRJ-04?')">
+    <rect x="40" y="248" width="160" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="120" y="268" text-anchor="middle" dominant-baseline="central">🙋 Query Jurídica</text>
+    <text class="ts" x="120" y="287" text-anchor="middle" dominant-baseline="central">FastAPI / Streamlit UI</text>
+  </g>
+
+  <!-- Arrow: Query → Similarity Search -->
+  <line x1="200" y1="274" x2="238" y2="274" class="arr arr-gray" marker-end="url(#arrow)"/>
+
+  <!-- Node: Similarity Search -->
+  <g class="node c-purple" onclick="sendPrompt('Qual o k=5 utilizado no similarity_search do PRJ-04?')">
+    <rect x="240" y="248" width="180" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="330" y="268" text-anchor="middle" dominant-baseline="central">Retrieval (k=5)</text>
+    <text class="ts" x="330" y="287" text-anchor="middle" dominant-baseline="central">Busca por Similaridade</text>
+  </g>
+
+  <!-- Path: ChromaDB to Retrieval -->
+  <path d="M 550 162 L 550 196 L 330 196 L 330 248" class="arr arr-purple" marker-end="url(#arrow)"/>
+
+  <!-- Arrow: Retrieval → RelevanceAuditor -->
+  <line x1="420" y1="274" x2="458" y2="274" class="arr arr-blue" marker-end="url(#arrow)"/>
+
+  <!-- Node: RelevanceAuditor -->
+  <g class="node c-blue" filter="url(#glow)" onclick="sendPrompt('Como o RelevanceAuditor pontua relevância e suporte no PRJ-04?')">
+    <rect x="460" y="248" width="180" height="52" rx="8" stroke-width="1.5"/>
+    <text class="th" x="550" y="268" text-anchor="middle" dominant-baseline="central">🕵️ RelevanceAuditor</text>
+    <text class="ts" x="550" y="287" text-anchor="middle" dominant-baseline="central">Score (0-1) &amp; Action</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       FASE 3: LOOP DE AUTOCORREÇÃO (RETRY / REWRITE)
+  ══════════════════════════════════════════════════ -->
+  <line x1="40" y1="440" x2="640" y2="440" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <text class="phase-label" x="40" y="432">LOOP DE AUTOCORREÇÃO (MÁXIMO 2 RETRIES)</text>
+
+  <!-- Node: Corrective Orchestrator Loop -->
+  <g class="node c-blue" onclick="sendPrompt('Como o orquestrador gerencia a máquina de estados do CRAG no PRJ-04?')">
+    <rect x="220" y="460" width="240" height="56" rx="10" stroke-width="0.5"/>
+    <text class="th" x="340" y="480" text-anchor="middle" dominant-baseline="central">🔄 CRAG Orchestrator</text>
+    <text class="ts" x="340" y="500" text-anchor="middle" dominant-baseline="central">Controle de Tentativas (Attempt 0-2)</text>
+  </g>
+
+  <!-- Arrow: RelevanceAuditor → Orchestrator -->
+  <path d="M 550 300 L 550 488 L 460 488" class="arr arr-blue" marker-end="url(#arrow)"/>
+
+  <!-- Arrow: Orchestrator to Reformulator -->
+  <path d="M 340 516 L 340 568" class="arr arr-amber" marker-end="url(#arrow)"/>
+  <text class="ts" x="348" y="538" text-anchor="start" fill="#fbbf24">action="retry"</text>
+
+  <!-- Node: QueryReformulator -->
+  <g class="node c-amber" onclick="sendPrompt('Como funcionam as estratégias de expansão e reescrita no QueryReformulator do PRJ-04?')">
+    <rect x="220" y="570" width="240" height="66" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="590" text-anchor="middle" dominant-baseline="central">✍️ QueryReformulator</text>
+    <text class="ts" x="340" y="609" text-anchor="middle" dominant-baseline="central">Tentativa 1: expand() com sinônimos</text>
+    <text class="ts" x="340" y="623" text-anchor="middle" dominant-baseline="central">Tentativa 2: rewrite() completa</text>
+  </g>
+
+  <!-- Arrow: Reformulator back to Query loop -->
+  <path d="M 220 603 L 20 603 L 20 274 L 40 274" class="arr arr-amber" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+
+  <!-- Arrow: Fail State after max retries -->
+  <path d="M 460 488 L 620 488 L 620 748" class="arr arr-coral" marker-end="url(#arrow)"/>
+  <text class="ts" x="615" y="476" text-anchor="end" fill="#f87171">Tentativa 2 &amp; relevância &lt; 0.5</text>
+
+  <!-- Node: Fail Refusal Response -->
+  <g class="node c-coral" onclick="sendPrompt('Qual a mensagem padrão de recusa quando a relevância falha no PRJ-04?')">
+    <rect x="490" y="748" width="150" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="565" y="768" text-anchor="middle" dominant-baseline="central">❌ Resposta de Recusa</text>
+    <text class="ts" x="565" y="787" text-anchor="middle" dominant-baseline="central">quality = "fail"</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       FASE 4: GERAÇÃO & VALIDAÇÃO DE ALUCINAÇÃO
+  ══════════════════════════════════════════════════ -->
+  <line x1="40" y1="672" x2="640" y2="672" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <text class="phase-label" x="40" y="664">GERAÇÃO E DETECÇÃO DE ALUCINAÇÃO</text>
+
+  <!-- Node: Generator ChatOllama -->
+  <g class="node c-purple" onclick="sendPrompt('Como o gerador técnico do PRJ-04 é invocado e estruturado?')">
+    <rect x="40" y="688" width="160" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="120" y="708" text-anchor="middle" dominant-baseline="central">🦙 Generator LLM</text>
+    <text class="ts" x="120" y="727" text-anchor="middle" dominant-baseline="central">ChatOllama (llama3.2:3b)</text>
+  </g>
+
+  <!-- Arrow: Orchestrator OK to Generator -->
+  <path d="M 220 488 L 120 488 L 120 688" class="arr arr-green" marker-end="url(#arrow)"/>
+  <text class="ts" x="128" y="476" text-anchor="start" fill="#4ade80">action="generate"</text>
+
+  <!-- Arrow: Generator to Validator -->
+  <line x1="200" y1="714" x2="238" y2="714" class="arr arr-purple" marker-end="url(#arrow)"/>
+
+  <!-- Node: HallucinationValidator -->
+  <g class="node c-purple" onclick="sendPrompt('Como o HallucinationValidator quebra e valida afirmações contra o contexto no PRJ-04?')">
+    <rect x="240" y="688" width="220" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="350" y="708" text-anchor="middle" dominant-baseline="central">🛡️ HallucinationValidator</text>
+    <text class="ts" x="350" y="727" text-anchor="middle" dominant-baseline="central">Validação rigorosa por afirmação</text>
+  </g>
+
+  <!-- Arrow: Validator to Final Output -->
+  <path d="M 350 740 L 350 788" class="arr arr-green" marker-end="url(#arrow)"/>
+
+  <!-- Node: Verified Output -->
+  <g class="node c-green" onclick="sendPrompt('Como o output final do PRJ-04 é rotulado em verificado ou incerto?')">
+    <rect x="240" y="790" width="220" height="52" rx="8" stroke-width="0.5"/>
+    <text class="th" x="350" y="810" text-anchor="middle" dominant-baseline="central">✅ Output Técnico Verificado</text>
+    <text class="ts" x="350" y="829" text-anchor="middle" dominant-baseline="central">Rotulado: verified / uncertain</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       FOOTER — METRICS
+  ══════════════════════════════════════════════════ -->
+  <rect x="40" y="846" width="600" height="20" rx="4"
+    fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+  <text class="ts" x="340" y="857" text-anchor="middle" dominant-baseline="central" opacity="0.7">
+    Métricas Reais: 14 arquivos Python · 932 linhas · 7 testes pytest OK (0.09s) · Epic GARE-53 Done
+  </text>
+
+  <script type="text/javascript">
+    function sendPrompt(msg) {
+      if (window.parent &amp;&amp; window.parent.postMessage) {
+        window.parent.postMessage({ type: 'sendPrompt', content: msg }, '*');
+      }
+      console.log('[GIULIA Diagram] Prompt:', msg);
+    }
+  </script>
+</svg>
