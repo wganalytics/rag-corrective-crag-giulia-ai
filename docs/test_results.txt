@@ -1,0 +1,9 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.9, pytest-8.3.2, pluggy-1.6.0
+rootdir: /Users/wemerson/DEVELOPER/giulia-ai-public/repos/rag-corrective-crag-giulia-ai
+plugins: cov-5.0.0, anyio-4.10.0, langsmith-0.4.34
+collected 7 items
+
+tests/test_auditor.py .......                                            [100%]
+
+============================== 7 passed in 0.06s ===============================

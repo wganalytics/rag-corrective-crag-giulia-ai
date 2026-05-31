@@ -33,18 +33,19 @@ if st.button("Executar") and query:
         resp = requests.post(f"{API_URL}/query", json={"question": query, "max_retries": max_retries})
         if resp.status_code == 200:
             result = resp.json()
+            attempts_count = len(result.get("history", []))
             st.session_state.history.append({
                 "q": query,
                 "a": result["answer"],
                 "quality": result["quality"],
-                "attempts": result["attempts"]
+                "attempts": attempts_count
             })
             
             col1, col2 = st.columns(2)
             with col1:
                 st.metric("Qualidade", result["quality"].upper())
             with col2:
-                st.metric("Tentativas", result["attempts"])
+                st.metric("Tentativas", attempts_count)
             
             st.text_area("Resposta:", result["answer"], height=200)
 

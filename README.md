@@ -18,6 +18,14 @@ O diagrama abaixo detalha o fluxo de controle de estados do pipeline. Cada requi
 
 ---
 
+## 🖥️ Interface do Usuário (Streamlit UI)
+
+Abaixo está o registro da interface gráfica executando uma consulta técnica jurídica no ecossistema:
+
+![Interface do Corrective RAG](./assets/screenshot.png)
+
+---
+
 ## 🧭 Fluxo de Decisões e Estados (Máquina de Estados)
 
 O orquestrador do Corrective RAG gerencia a execução através do seguinte algoritmo estruturado:
